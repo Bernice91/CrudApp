@@ -1,0 +1,34 @@
+{
+  "employes": [
+    {
+      "id": "1",
+      "name": "Rahul",
+      "email": "rahul@gmail.com",
+      "phone": "7890-456789"
+    },
+    {
+      "id": "2",
+      "name": "jeya2",
+      "email": "jeya2@gmail.com",
+      "phone": "6578-456789"
+    },
+    {
+      "id": "3",
+      "name": "Mani",
+      "email": "mani@gmail.com",
+      "phone": "8913-899800"
+    },
+    {
+      "id": "4",
+      "name": "Kala23",
+      "email": "Kala56@gmail.com",
+      "phone": "8567-456789"
+    },
+    {
+      "id": "5",
+      "name": "Rani",
+      "email": "Rani@gmail.com",
+      "phone": "7890-245890"
+    }
+  ]
+}
