@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import axios from "axios";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     const [data, setData] = useState([])
-    const navigate = useNavigate()
+    //const navigate = useNavigate()
 
     useEffect(() => {
         axios.get("http://localhost:3050/employes")
@@ -18,8 +18,9 @@ const Home = () => {
         if (confirm) {
             axios.delete("http://localhost:3050/employes/" + id)
                 .then(res => {
+                    setData(data.filter((post)=>post.id!==id))
                     alert("Deleted successfully")
-                    navigate('/')
+                    //navigate('/')
                 
                 })
         }
