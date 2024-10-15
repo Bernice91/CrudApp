@@ -26,9 +26,27 @@
     },
     {
       "id": "5",
-      "name": "Rani",
+      "name": "Rani7",
       "email": "Rani@gmail.com",
       "phone": "7890-245890"
+    },
+    {
+      "id": "6",
+      "name": "Nisha",
+      "email": "Nisha67@gmail.com",
+      "phone": "7290-246850"
+    },
+    {
+      "id": "7",
+      "name": "Joshua",
+      "email": "Joshua90@gmail.com",
+      "phone": "6730-255870"
+    },
+    {
+      "id": "8",
+      "name": "manoj",
+      "email": "manoj456@gmail.com",
+      "phone": "9898-453210"
     }
   ]
 }

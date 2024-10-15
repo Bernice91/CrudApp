@@ -7,13 +7,13 @@ const Component = styled(Box)({
     padding: '30px',
     marginTop: '50px',
     border: '1px solid white',
-    boxShadow: '0 0 20px 0',
+    boxShadow: '0 0 20px rgb(0,0,0,0.2)',
     width: '100',
     height: '100'
 })
 
 const Create = () => {
-    const [input, setInput] = useState({ name: '', email: '', phone: '' })
+    const [input, setInput] = useState({ id: '', name: '', email: '', phone: '' })
     const navigate = useNavigate()
 
     const handleSubmit = (e) => {
@@ -30,18 +30,29 @@ const Create = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography variant='h5' component='h2' textAlign='center' marginTop='50px' fontWeight='bold'>Add Employes</Typography>
+            <Typography variant='h5' component='h2' textAlign='center' marginTop='50px' fontWeight='bold'>Add Employees</Typography>
             <Component>
                 <Box sx={{ mb: 2, mt: 5 }}>
-                    <TextField
-                        variant='outlined'
-                        label='Enter the name'
-                        id='name'
-                        name='name'
-                        size='small'
-                        value={input.name}
-                        onChange={(e) => setInput({ ...input, name: e.target.value })}
-                        fullWidth />
+                        <TextField
+                            variant='outlined'
+                            label='Enter the id'
+                            id='id'
+                            name='id'
+                            size='small'
+                            value={input.id}
+                            onChange={(e) => setInput({ ...input, id: e.target.value })}
+                            fullWidth />
+                    <Box sx={{ mb: 2,mt:2 }}>
+                        <TextField
+                            variant='outlined'
+                            label='Enter the name'
+                            id='name'
+                            name='name'
+                            size='small'
+                            value={input.name}
+                            onChange={(e) => setInput({ ...input, name: e.target.value })}
+                            fullWidth />
+                    </Box>
                 </Box>
                 <Box sx={{ mb: 2 }}>
                     <TextField
@@ -66,7 +77,7 @@ const Create = () => {
                         fullWidth />
                 </Box>
                 <Box textAlign='center' mb={2}>
-                    <Button variant='contained' color='primary' size='small' onClick={handleSubmit}>Submit</Button>
+                    <Button variant='contained' color='primary' size='small' fullWidth onClick={handleSubmit}>Submit</Button>
                 </Box>
             </Component>
         </Box>
