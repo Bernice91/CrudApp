@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography } from "@mui/material";
+import { Box, Button, InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 
 const Home = () => {
     const [data, setData] = useState([])
-    //const navigate = useNavigate()
+    //sorting
+    const [order, setOrder] = useState('asc')
+    const [orderBy, setOrderBy] = useState('id')
 
+    //searching
     const [filterData, setFilterData] = useState([])
     const [query, setQuery] = useState('')
 
-    const columns = [
-        { 'id': 'id', name: 'ID' },
-        { 'id': 'name', name: 'NAME' },
-        { 'id': 'email', name: 'EMAIL' },
-        { 'id': 'phone', name: 'PHONE' },
-        { 'id': 'actions', name: 'ACTIONS' }
-    ]
-
+    //pagination
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
 
@@ -30,6 +26,31 @@ const Home = () => {
         setRowsPerPage(+event.target.value)
         setPage(0)
     }
+    //sorting the algorithm
+    const descendingComparator = (a, b, orderBy) => {
+        if (b[orderBy] < a[orderBy]) {
+            return -1
+        }
+        if (b[orderBy] > a[orderBy]) {
+            return 1
+        }
+        return 0
+    }
+
+
+    const getComparator = (order, orderBy) => {
+        return order === 'desc'
+            ? (a, b) => descendingComparator(a, b, orderBy) 
+            : (a, b) => -descendingComparator(a, b, orderBy)
+    }
+
+    const handleRequestSort=(property)=>{
+        const isAsc = orderBy === property && order === 'asc';
+          setOrder(isAsc ? 'desc' : 'asc');
+          setOrderBy(property);
+    }
+
+    const sortedRows = [...data].sort(getComparator(order, orderBy));
 
 
     useEffect(() => {
@@ -41,6 +62,7 @@ const Home = () => {
             .catch(err => console.log(err))
     }, [])
 
+    //deleting the data
     const handleDelete = (id) => {
         const confirm = window.confirm("Do u like to delete?")
         if (confirm) {
@@ -53,7 +75,7 @@ const Home = () => {
                 })
         }
     }
-
+    //searching the data
     const handleSearch = (e) => {
         const getSearch = e.target.value
         setQuery(getSearch)
@@ -73,23 +95,60 @@ const Home = () => {
                 List of Employees
             </Typography>
             <Link to='/create'>
-                <Button variant='contained' color='success' sx={{ mb: 2, mr: '320px' }}>Create +</Button>
+                <Button variant='contained' color='success' sx={{ mb: 2, mr: '340px' }}>Create +</Button>
             </Link>
-            <IconButton>
-                <SearchIcon sx={{ position: 'relative', left: '220px', bottom: '8px' }} />
-                <TextField label='search...' size='small' variant='outlined' sx={{ mb: 2 }} value={query} onChange={(e) => handleSearch(e)} />
-            </IconButton>
+            <TextField
+                placeholder='search...'
+                size='small'
+                variant='outlined'
+                sx={{ mb: 2 }}
+                value={query}
+                onChange={(e) => handleSearch(e)}
+                slotProps={{
+                    input: {
+                        startAdornment: (
+                            <InputAdornment>
+                                <SearchIcon />
+                            </InputAdornment>
+                        )
+                    }
+                }} />
+
             <TableContainer component={Paper} elevation={5} sx={{ width: '90%', overflow: 'hidden' }}>
                 <Table aria-label='simple table' sx={{ minWidth: 360 }} >
                     <TableHead>
                         <TableRow >
-                            {columns.map((column) => (
-                                <TableCell key={column.id} sx={{ backgroundColor: 'blue', color: 'white' }}>{column.name}</TableCell>
-                            ))}
+                            <TableCell>
+                                <TableSortLabel active={orderBy === 'id'}
+                                    direction={orderBy === 'id' ? order : 'asc'} onClick={()=>handleRequestSort('id')}>
+                                    ID
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell>
+                                <TableSortLabel active={orderBy === 'name'}
+                                    direction={orderBy === 'name' ? order : 'asc'} onClick={()=>handleRequestSort('name')}>
+                                    NAME
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell>
+                                <TableSortLabel active={orderBy === 'email'}
+                                    direction={orderBy === 'email' ? order : 'asc'} onClick={()=>handleRequestSort('email')}>
+                                    EMAIL
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell>
+                                <TableSortLabel active={orderBy === 'phone'}
+                                    direction={orderBy === 'phone' ? order : 'asc'} onClick={()=>handleRequestSort('phone')}>
+                                    PHONE
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell>
+                                ACTIONS
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => (
+                        {sortedRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => (
                             <TableRow key={index}>
                                 <TableCell>{user.id}</TableCell>
                                 <TableCell>{user.name}</TableCell>
@@ -114,7 +173,6 @@ const Home = () => {
                     page={page}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerChange}>
-
                 </TablePagination>
             </TableContainer>
         </Box>
